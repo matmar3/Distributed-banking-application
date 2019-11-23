@@ -1,0 +1,75 @@
+Vytvoří bankovní operaci
+Vytvoří bankovní operaci a přepošle ji dále
+---
+consumes:
+  - application/json
+produces:
+  - application/json
+parameters:
+  - in: body
+    name: request
+    description: Detaily bankovní operace
+    schema:
+      $ref: '#/definitions/BankRequest'
+responses:
+  '200':
+    description: Bankovní operace úspěšně vytvořena
+    schema:
+      $ref: '#/definitions/UniqueBankRequest'
+  '400':
+    description: Nevalidní formát požadavku
+    schema:
+      $ref: '#/definitions/Response'
+    examples:
+      application/json: {
+        "code": 400,
+        "description": "Nevalidní formát požadavku."
+      }
+  '404':
+    description: Stránka nenalezena
+    schema:
+      $ref: '#/definitions/Response'
+    examples:
+      application/json: {
+        "code": 404,
+        "description": "Stránka nenalezena."
+      }
+definitions:
+  BankRequest:
+    type: object
+    required:
+      - amount
+      - operation
+    properties:
+      amount:
+        description: Množství peněz
+        type: integer
+        minimum: 10000
+        maximum: 50000
+        example: 15000
+      operation:
+        description: Typ operace
+        type: string
+        enum: [CREDIT, DEBIT]
+        example: CREDIT
+  UniqueBankRequest:
+    allOf:
+      - $ref: '#/definitions/BankRequest'
+      - properties:
+          id:
+            description: Unikátní identifikátor bankovní operace
+            type: integer
+            minimum: 1
+            example: 1523
+  Response:
+    type: object
+    required:
+      - code
+      - description
+    properties:
+      code:
+        description: Kód
+        type: integer
+      description:
+        description: Zpráva
+        type: string
