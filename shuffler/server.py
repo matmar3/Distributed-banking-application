@@ -35,7 +35,7 @@ app.config['APPLICATION_ROOT'] = '/v1'
 # Configure logging
 log = logging.getLogger()
 log.setLevel(logging.DEBUG) if debug else log.setLevel(logging.INFO)
-log_formatter = logging.Formatter("%(asctime)s [%(threadName)s] [%(levelname)s] %(name)s: %(message)s")
+log_formatter = logging.Formatter("%(asctime)s [%(threadName)10s] [%(levelname)7s] %(name)25s: %(message)s")
 console_handler = logging.StreamHandler()
 console_handler.setFormatter(log_formatter)
 log.addHandler(console_handler)

@@ -35,7 +35,7 @@ app.config['APPLICATION_ROOT'] = '/v1'
 # Configure logging
 log = logging.getLogger()
 log.setLevel(logging.DEBUG) if debug else log.setLevel(logging.INFO)
-log_formatter = logging.Formatter("%(asctime)s [%(threadName)s] [%(levelname)s] %(name)s: %(message)s")
+log_formatter = logging.Formatter("%(asctime)s [%(threadName)10s] [%(levelname)7s] %(name)25s: %(message)s")
 console_handler = logging.StreamHandler()
 console_handler.setFormatter(log_formatter)
 log.addHandler(console_handler)
@@ -132,7 +132,7 @@ def bank_request():
     # compute interval between requests
     actual_time = time.time()
     diff = actual_time - last_request
-    app.logger.info('%d sec diff', diff)
+    app.logger.debug('Interval between HTTP requests is %d s.', diff)
 
     # check interval
     if diff > interval and stored_requests.size() > 0:
@@ -140,14 +140,16 @@ def bank_request():
         url = "http://{0}:{1}{2}".format(forward_host, forward_port, forward_route)
         app.logger.info('Posting data to %s in count of %d requests.', url, stored_requests.size())
         try:
-            status_code = requests.post(
+            response = requests.post(
                 url,
                 json=stored_requests.serialize()
-            ).status_code
+            )
+            status_code = response.status_code
         except requests.exceptions.RequestException:
             status_code = status.HTTP_408_REQUEST_TIMEOUT
         # handle response
         if status_code is status.HTTP_200_OK:
+            app.logger.info('POST to %s succeeded with status code %d.', url, status_code)
             last_request = actual_time
             stored_requests.clean()
         else:
