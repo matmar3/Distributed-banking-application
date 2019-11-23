@@ -12,11 +12,11 @@ import logging
 
 # Bank servers
 endpoints = [
-    Endpoint('10.0.1.12', 8080, '/store'),
-    Endpoint('10.0.1.13', 8080, '/store'),
-    Endpoint('10.0.1.14', 8080, '/store'),
-    Endpoint('10.0.1.15', 8080, '/store'),
-    Endpoint('10.0.1.16', 8080, '/store')
+    Endpoint('10.0.1.12', 8080, '/requests/process'),
+    Endpoint('10.0.1.13', 8080, '/requests/process'),
+    Endpoint('10.0.1.14', 8080, '/requests/process'),
+    Endpoint('10.0.1.15', 8080, '/requests/process'),
+    Endpoint('10.0.1.16', 8080, '/requests/process')
 ]
 # endpoints = [
 #     Endpoint('172.0.0.1', 8080, '/store')
@@ -106,7 +106,7 @@ def index():
 ######################################################################
 #  API Request
 ######################################################################
-@app.route("/shuffle", methods=['POST'])
+@app.route("/requests/shuffle", methods=['POST'])
 @swag_from("api/shuffle.yml")
 def shuffle_requests():
     global endpoints
@@ -121,6 +121,8 @@ def shuffle_requests():
     fail = []
 
     app.logger.info('Sending data to all endpoints.')
+    # shuffle endpoints
+    shuffle(endpoints)
     for endpoint in endpoints:
         # shuffle data
         shuffle(valid_json_data)

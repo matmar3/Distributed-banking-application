@@ -12,7 +12,7 @@ import logging
 # Shuffler IP
 forward_host = '10.0.1.11'
 forward_port = 8080
-forward_route = '/shuffle'
+forward_route = '/requests/shuffle'
 
 # Server timer
 last_request = time.time()
