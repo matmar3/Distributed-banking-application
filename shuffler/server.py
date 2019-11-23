@@ -11,17 +11,17 @@ import requests
 from pprint import pformat
 import logging
 
-# Shuffler IP
-# endpoints = [
-#     Endpoint('10.0.1.12', 8080, '/store'),
-#     Endpoint('10.0.1.13', 8080, '/store'),
-#     Endpoint('10.0.1.14', 8080, '/store'),
-#     Endpoint('10.0.1.15', 8080, '/store'),
-#     Endpoint('10.0.1.16', 8080, '/store')
-# ]
+# Bank servers
 endpoints = [
-    Endpoint('172.0.0.1', 8080, '/store')
+    Endpoint('10.0.1.12', 8080, '/store'),
+    Endpoint('10.0.1.13', 8080, '/store'),
+    Endpoint('10.0.1.14', 8080, '/store'),
+    Endpoint('10.0.1.15', 8080, '/store'),
+    Endpoint('10.0.1.16', 8080, '/store')
 ]
+# endpoints = [
+#     Endpoint('172.0.0.1', 8080, '/store')
+# ]
 
 # Pull options from environment
 debug = (os.getenv('DEBUG', 'False') == 'True')
@@ -108,7 +108,9 @@ def shuffle_requests():
     global endpoints
 
     # process request data
-    json_data = request.get_json()
+    ubr_list = UBRList()
+    ubr_list.deserialize(request.get_json())
+    valid_json_data = ubr_list.serialize()
 
     # init results
     success = []
@@ -117,11 +119,11 @@ def shuffle_requests():
     app.logger.info('Sending data to all endpoints.')
     for endpoint in endpoints:
         # shuffle data
-        shuffle(json_data)
+        shuffle(valid_json_data)
         # sent data
         url = "http://{0}:{1}{2}".format(endpoint.host, endpoint.port, endpoint.route)
         try:
-            status_code = requests.post(url, json=json_data).status_code
+            status_code = requests.post(url, json=valid_json_data).status_code
         except requests.exceptions.RequestException:
             status_code = status.HTTP_408_REQUEST_TIMEOUT
         # handle response
@@ -130,13 +132,19 @@ def shuffle_requests():
         else:
             fail.append({'endpoint': url, 'code': status_code})
     app.logger.debug(pformat({'successful': success, 'failed': fail}))
-    
+
     # response
     if len(fail) == 0:
-        response = Response(code=status.HTTP_200_OK, description='Bankovní operace úspěšně zpracovány')
+        response = Response(
+            code=status.HTTP_200_OK,
+            description='Bankovní operace úspěšně zpracovány'
+        )
         return make_response(response.serialize(), status.HTTP_200_OK)
     else:
-        response = Response(code=status.HTTP_503_SERVICE_UNAVAILABLE, description='Nepodařilo se zpracovat bankovní oprace')
+        response = Response(
+            code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            description='Nepodařilo se zpracovat bankovní oprace'
+        )
         return make_response(response.serialize(), status.HTTP_503_SERVICE_UNAVAILABLE)
 
 
