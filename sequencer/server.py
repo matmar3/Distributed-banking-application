@@ -106,9 +106,9 @@ def index():
 ######################################################################
 #  API Request
 ######################################################################
-@app.route("/request", methods=['POST'])
-@swag_from("api/request.yml")
-def bank_request():
+@app.route("/requests/create", methods=['POST'])
+@swag_from("api/requests.yml")
+def create_request():
     global stored_requests
     global last_request
     global interval
