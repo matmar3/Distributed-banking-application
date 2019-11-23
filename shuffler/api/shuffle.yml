@@ -1,4 +1,4 @@
-Zamíchá sekvenci bankovních operací a rozešlě je na bankovní servery
+Zamíchá sekvenci bankovních operací a rozešle je na bankovní servery
 ---
 consumes:
   - application/json
