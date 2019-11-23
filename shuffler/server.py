@@ -6,9 +6,8 @@ from flask import Flask, jsonify, request, make_response
 from flasgger import Swagger, swag_from
 from flask_api import status    # HTTP Status Codes
 from werkzeug import exceptions as ex
-from models import BankRequest, UniqueBankRequest, Response, UBRList, Endpoint
+from models import Response, UBRList, Endpoint
 import requests
-from pprint import pformat
 import logging
 
 # Bank servers
@@ -131,7 +130,7 @@ def shuffle_requests():
             success.append({'endpoint': url, 'code': status_code})
         else:
             fail.append({'endpoint': url, 'code': status_code})
-    app.logger.debug(pformat({'successful': success, 'failed': fail}))
+    app.logger.debug('\n' + json.dumps({'successful': success, 'failed': fail}, indent=4, sort_keys=True))
 
     # response
     if len(fail) == 0:
