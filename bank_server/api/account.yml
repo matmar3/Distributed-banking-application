@@ -1,0 +1,47 @@
+Provede výpis z účtu
+Vypíše informace o lokálním bankovním účtu
+---
+produces:
+- application/json
+responses:
+  '200':
+    description: Výpis z účtu
+    schema:
+      $ref: '#/definitions/Account'
+  '404':
+    description: Stránka nenalezena
+    schema:
+      $ref: '#/definitions/Response'
+    examples:
+      application/json: {
+        "code": 404,
+        "description": "Stránka nenalezena."
+      }
+definitions:
+  Response:
+    type: object
+    required:
+      - code
+      - description
+    properties:
+      code:
+        description: Kód
+        type: integer
+      description:
+        description: Zpráva
+        type: string
+  Account:
+    type: object
+    required:
+      - id
+      - balance
+    properties:
+      id:
+        description: Číslo účtu
+        type: string
+        example: d41d8cd98f0
+      balance:
+        description: Zůstatek na účtě
+        type: integer
+        minimum: 0
+        example: 100000
