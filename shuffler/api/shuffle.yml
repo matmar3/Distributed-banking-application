@@ -1,0 +1,85 @@
+Zamíchá sekvenci bankovních operací a rozešlě je na bankovní servery
+---
+consumes:
+  - application/json
+produces:
+  - application/json
+parameters:
+  - in: body
+    name: request sequence
+    description: Sekvence bankovních operací
+    schema:
+      $ref: '#/definitions/UBRList'
+responses:
+  '200':
+    description: Bankovní operace úspěšně zamíchány a přeposlány dále
+    schema:
+      $ref: '#/definitions/Response'
+    examples:
+      application/json: {
+        "code": 200,
+        "description": "Bankovní operace úspěšně zpracovány."
+      }
+  '400':
+    description: Nevalidní sekvence bankovních operací
+    schema:
+      $ref: '#/definitions/Response'
+    examples:
+      application/json: {
+        "code": 400,
+        "description": "Nevalidní vstupní sekvence bankovních operací."
+      }
+  '404':
+    description: Stránka nenalezena
+    schema:
+      $ref: '#/definitions/Response'
+    examples:
+      application/json: {
+        "code": 404,
+        "description": "Stránka nenalezena."
+      }
+definitions:
+  BankRequest:
+    type: object
+    required:
+      - amount
+      - operation
+    properties:
+      amount:
+        description: Množství peněz
+        type: integer
+        minimum: 10000
+        maximum: 50000
+        example: 15000
+      operation:
+        description: Typ operace
+        type: string
+        enum: [CREDIT, DEBIT]
+        example: CREDIT
+  UniqueBankRequest:
+    allOf:
+      - $ref: '#/definitions/BankRequest'
+      - required:
+        - id
+      - properties:
+          id:
+            description: Unikátní identifikátor bankovní operace
+            type: integer
+            minimum: 1
+            example: 1523
+  UBRList:
+    type: array
+    items:
+      $ref: '#/definitions/UniqueBankRequest'
+  Response:
+    type: object
+    required:
+      - code
+      - description
+    properties:
+      code:
+        description: Kód
+        type: integer
+      description:
+        description: Zpráva
+        type: string
