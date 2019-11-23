@@ -51,7 +51,7 @@ template = {
     "info": {
         "description": "Semestrální práce z předmětu DS",
         "version": "1.0.0",
-        "title": "Distribuovaná bankovní aplikace",
+        "title": "Distribuovaná bankovní aplikace - Sequencer",
         "contact": {
           "email": "martinm@students.zcu.cz"
         },
@@ -91,7 +91,7 @@ def handle_exception(e):
 def index():
     return make_response(
         jsonify(
-            name='Distribuovaná bankovní aplikace',
+            name='Distribuovaná bankovní aplikace - Sequencer',
             version='1.0.0',
             docs=request.base_url + 'v1/apidocs/'
         ), status.HTTP_200_OK

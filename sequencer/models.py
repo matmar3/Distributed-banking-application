@@ -1,6 +1,3 @@
-import json
-
-
 class Response(object):
 
     def __init__(self, code=None, description=None):
