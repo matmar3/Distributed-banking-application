@@ -84,7 +84,11 @@ def handle_generic_error(e):
 def handle_exception(e):
     # pass through HTTP errors
     if isinstance(e, ex.HTTPException):
-        return e
+        return handle_generic_error(e)
+
+    # pass through Value errors
+    if isinstance(e, ValueError):
+        return handle_generic_error(ex.BadRequest(e.message))
 
     # handling non-HTTP exceptions only
     return handle_generic_error(ex.InternalServerError)
@@ -104,7 +108,7 @@ def index():
 
 
 ######################################################################
-#  API Request
+#  API Requests
 ######################################################################
 @app.route("/requests/shuffle", methods=['POST'])
 @swag_from("api/shuffle.yml")

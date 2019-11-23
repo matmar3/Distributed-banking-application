@@ -1,6 +1,3 @@
-import json
-
-
 class Response(object):
 
     def __init__(self, code=None, description=None):
@@ -47,68 +44,6 @@ class Response(object):
         }
 
 
-class BankRequest(object):
-
-    def __init__(self, amount=None, operation=None):
-        self.swagger_types = {
-            'amount': int,
-            'operation': str
-        }
-
-        self.attribute_map = {
-            'amount': 'amount',
-            'operation': 'operation'
-        }
-
-        self._amount = amount
-        self._operation = operation
-
-    @property
-    def amount(self):
-        return self._amount
-
-    @amount.setter
-    def amount(self, amount):
-        if amount is None:
-            raise ValueError("Invalid value for `amount`, must not be `None`")
-        if amount is not None and amount > 50000:
-            raise ValueError("Invalid value for `amount`, must be a value less than or equal to `50000`")
-        if amount is not None and amount < 10000:
-            raise ValueError("Invalid value for `amount`, must be a value greater than or equal to `10000`")
-
-        self._amount = amount
-
-    @property
-    def operation(self):
-        return self._operation
-
-    @operation.setter
-    def operation(self, operation):
-        allowed_values = ["CREDIT", "DEBIT"]
-        if operation not in allowed_values:
-            raise ValueError(
-                "Invalid value for `operation` ({0}), must be one of {1}".format(operation, allowed_values)
-            )
-
-        self._operation = operation
-
-    def serialize(self):
-        return {
-            "amount": self._amount,
-            "operation": self._operation
-        }
-
-    def deserialize(self, data):
-        if not isinstance(data, dict):
-            raise ValueError('Invalid bank request: body of request contained bad or no data')
-        try:
-            self._amount = data['amount']
-            self._operation = data['operation']
-        except KeyError as e:
-            raise ValueError('Invalid bank request: missing ' + e.args[0])
-        return
-
-
 class UniqueBankRequest(object):
 
     def __init__(self, identifier=None, amount=None, operation=None):
@@ -122,7 +57,7 @@ class UniqueBankRequest(object):
         self.attribute_map = {
             'amount': 'amount',
             'operation': 'operation',
-            'id': 'id'
+            'id': 'identifier'
         }
 
         self._id = identifier
