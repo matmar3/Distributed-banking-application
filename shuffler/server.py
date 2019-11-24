@@ -33,7 +33,7 @@ app = Flask(__name__)
 app.config['APPLICATION_ROOT'] = '/v1'
 
 # Configure logging
-fileConfig('../logger.cfg')
+fileConfig('/vagrant/shuffler/logger.cfg')
 log = logging.getLogger()
 
 # Configure Swagger before initializing it
