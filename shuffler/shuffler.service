@@ -1,0 +1,10 @@
+[Unit]
+Description=Shuffler
+After=network-online.target
+
+[Service]
+SyslogIdentifier=shuffler
+ExecStart=/usr/bin/python /vagrant/shuffler/server.py
+
+[Install]
+WantedBy=multi-user.target

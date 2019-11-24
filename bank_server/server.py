@@ -6,9 +6,11 @@ from flask_api import status    # HTTP Status Codes
 from werkzeug import exceptions as ex
 from models import Response, UBRList, Account
 import logging
+from logging.config import fileConfig
 
 # Local account
 account = Account()
+last_processed_request_id = 0
 
 # Pull options from environment
 debug = (os.getenv('DEBUG', 'False') == 'True')
@@ -21,12 +23,8 @@ app = Flask(__name__)
 app.config['APPLICATION_ROOT'] = '/v1'
 
 # Configure logging
+fileConfig('../logger.cfg')
 log = logging.getLogger()
-log.setLevel(logging.DEBUG) if debug else log.setLevel(logging.INFO)
-log_formatter = logging.Formatter("%(asctime)s [%(threadName)10s] [%(levelname)7s] %(name)25s: %(message)s")
-console_handler = logging.StreamHandler()
-console_handler.setFormatter(log_formatter)
-log.addHandler(console_handler)
 
 # Configure Swagger before initializing it
 app.config['SWAGGER'] = {
@@ -114,6 +112,7 @@ def account_details():
 @swag_from("api/requests.yml")
 def process_requests():
     global account
+    global last_processed_request_id
 
     # process request data
     ubr_list = UBRList()
@@ -126,10 +125,12 @@ def process_requests():
 
     # perform bank requests in order
     for req in sorted_bank_requests:
-        if req.operation == 'CREDIT':
-            account.increase_balance(req.amount)
-        else:
-            account.decrease_balance(req.amount)
+        if last_processed_request_id < req.id:
+            if req.operation == 'CREDIT':
+                account.increase_balance(req.amount)
+            else:
+                account.decrease_balance(req.amount)
+            last_processed_request_id = req.id
 
     # response
     response = Response(

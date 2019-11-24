@@ -1,0 +1,10 @@
+[Unit]
+Description=Sequencer
+After=network-online.target
+
+[Service]
+SyslogIdentifier=sequencer
+ExecStart=/usr/bin/python /vagrant/sequencer/server.py
+
+[Install]
+WantedBy=multi-user.target

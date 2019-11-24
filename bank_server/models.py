@@ -157,7 +157,7 @@ class Account(object):
             identifier = uuid.uuid4().hex
 
         if balance is None:
-            balance = 0
+            balance = 5000000
 
         self.swagger_types = {
             'id': str,
