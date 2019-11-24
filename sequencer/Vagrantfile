@@ -1,26 +1,35 @@
-Vagrant.configure(2) do |config|
-    # Sequencer location
-    config.vm.synced_folder "./", "/vagrant"
+# -*- mode: ruby -*- 
+# vi: set ft=ruby : 
 
-    # VM for Sequencer
-    config.vm.define "sequencer" do |cfg|
-      # VM box
-      cfg.vm.box = "hashicorp/bionic64"
-      cfg.vm.box_version = "1.0.282"
-      # Network configuration
-      cfg.vm.network "private_network", ip: "10.0.1.10"
-      # Provision a Python environment
-      cfg.vm.provision "shell", inline: <<-SHELL
-        # Install tools
-        sudo apt-get update
-        sudo apt-get -y install python-pip
-        sudo apt-get -y autoremove
-        # Install app dependencies
-        cd /vagrant
-        sudo pip install -r requirements.txt
-        # Run server
-        python server.py
-      SHELL
-    end
+# Every Vagrant development environment requires a box. You can search for 
+# boxes at https://atlas.hashicorp.com/search. 
+BOX_IMAGE = "hashicorp/bionic64" 
+BOX_VER = "1.0.282"
+NODE_COUNT = 3 
+
+Vagrant.configure(2) do |config|
+  
+  # Sequencer location
+  config.vm.synced_folder "./", "/vagrant"
+
+  # VM for Sequencer
+  config.vm.define "sequencer" do |subconfig|
+    subconfig.vm.box = BOX_IMAGE
+    subconfig.vm.box_version = BOX_VER
+    subconfig.vm.network :private_network, ip: "10.0.1.10"
+  end
+    
+  # Provision a Python environment
+  config.vm.provision "shell", inline: <<-SHELL
+    # Install tools
+    sudo apt-get update
+    sudo apt-get -y install python-pip
+    sudo apt-get -y autoremove
+    # Install app dependencies
+    cd /vagrant
+    sudo pip install -r requirements.txt
+    # Run server
+    python server.py
+  SHELL
 
 end

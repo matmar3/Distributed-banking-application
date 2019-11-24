@@ -16,7 +16,6 @@ endpoints = [
     Endpoint('10.0.1.13', 8080, '/requests/process'),
     Endpoint('10.0.1.14', 8080, '/requests/process'),
     Endpoint('10.0.1.15', 8080, '/requests/process'),
-    Endpoint('10.0.1.16', 8080, '/requests/process')
 ]
 # endpoints = [
 #     Endpoint('172.0.0.1', 8080, '/store')
