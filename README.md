@@ -10,7 +10,7 @@ Případně jsou také dostupné na následujících odkazech:
   
 ## Spuštění  
   
-Pro spuštění serverů je potřeba použít příkaz `vagrant up`. Servery si sami stáhnou vše potřebné pro běh a spustí skript `server.py`, který se nachází v adresáři každého serveru.  
+Pro spuštění serverů je potřeba použít příkaz `vagrant up` v kořenovém adresáři repozitáře. Servery si sami stáhnou vše potřebné pro běh a spustí skript `server.py`, který se nachází v adresáři každého serveru.
   
 Klientský program je umístěn v aresáři `client/` a je napsán v jazyce **Python 2**. Pro jeho spuštění bude potřeba doinstalovat balíček **requests** (napříkald příkazem `pip install requests`). Poté je možné spustit klientskou aplikaci následovným způsobem:  
 - `python client.py -h` - zobrazí nápovědu programu  
