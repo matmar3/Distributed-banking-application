@@ -34,7 +34,7 @@ def main():
 
 def load_endpoints():
     config = configparser.ConfigParser()
-    config.read('../endpoints.cfg')
+    config.read('endpoints.cfg')
 
     port = config['DEFAULT']['port']
 
