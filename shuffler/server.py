@@ -18,9 +18,6 @@ endpoints = [
     Endpoint('10.0.1.14', 8080, '/requests/process'),
     Endpoint('10.0.1.15', 8080, '/requests/process'),
 ]
-# endpoints = [
-#     Endpoint('172.0.0.1', 8080, '/store')
-# ]
 
 # Pull options from environment
 debug = (os.getenv('DEBUG', 'False') == 'True')
@@ -28,9 +25,6 @@ port = os.getenv('PORT', '8080')
 
 # Initialize Flask
 app = Flask(__name__)
-
-# Configure root path
-app.config['APPLICATION_ROOT'] = '/v1'
 
 # Configure logging
 fileConfig('/vagrant/shuffler/logger.cfg')
@@ -40,11 +34,11 @@ log = logging.getLogger()
 app.config['SWAGGER'] = {
     "specs": [
         {
-            "endpoint": 'v1_spec',
-            "route": '/v1/spec'
+            "endpoint": 'spec',
+            "route": '/spec'
         }
     ],
-    "specs_route": "/v1/apidocs/"
+    "specs_route": "/apidocs/"
 }
 
 template = {
@@ -60,8 +54,7 @@ template = {
           "name": "Apache 2.0",
           "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         }
-    },
-    "basePath": "/v1"
+    }
 }
 
 # Initialize Swagger after configuring it
@@ -98,7 +91,7 @@ def index():
         jsonify(
             name='Distribuovaná bankovní aplikace - Shuffler',
             version='1.0.0',
-            docs=request.base_url + 'v1/apidocs/'
+            docs=request.base_url + 'apidocs/'
         ), status.HTTP_200_OK
     )
 

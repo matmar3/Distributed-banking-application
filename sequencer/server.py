@@ -30,9 +30,6 @@ port = os.getenv('PORT', '8080')
 # Initialize Flask
 app = Flask(__name__)
 
-# Configure root path
-app.config['APPLICATION_ROOT'] = '/v1'
-
 # Configure logging
 fileConfig('/vagrant/sequencer/logger.cfg')
 log = logging.getLogger()
@@ -41,11 +38,11 @@ log = logging.getLogger()
 app.config['SWAGGER'] = {
     "specs": [
         {
-            "endpoint": 'v1_spec',
-            "route": '/v1/spec'
+            "endpoint": 'spec',
+            "route": '/spec'
         }
     ],
-    "specs_route": "/v1/apidocs/"
+    "specs_route": "/apidocs/"
 }
 
 template = {
@@ -61,8 +58,7 @@ template = {
           "name": "Apache 2.0",
           "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         }
-    },
-    "basePath": "/v1"
+    }
 }
 
 # Initialize Swagger after configuring it
@@ -99,7 +95,7 @@ def index():
         jsonify(
             name='Distribuovaná bankovní aplikace - Sequencer',
             version='1.0.0',
-            docs=request.base_url + 'v1/apidocs/'
+            docs=request.base_url + 'apidocs/'
         ), status.HTTP_200_OK
     )
 
