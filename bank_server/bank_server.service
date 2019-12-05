@@ -4,7 +4,7 @@ After=network-online.target
 
 [Service]
 SyslogIdentifier=bank-server
-ExecStart=/usr/bin/python /vagrant/bank_server/server.py
+ExecStart=/usr/bin/python3 /vagrant/bank_server/server.py
 
 [Install]
 WantedBy=multi-user.target

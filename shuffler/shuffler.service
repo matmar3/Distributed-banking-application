@@ -4,7 +4,7 @@ After=network-online.target
 
 [Service]
 SyslogIdentifier=shuffler
-ExecStart=/usr/bin/python /vagrant/shuffler/server.py
+ExecStart=/usr/bin/python3 /vagrant/shuffler/server.py
 
 [Install]
 WantedBy=multi-user.target

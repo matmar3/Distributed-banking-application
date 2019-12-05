@@ -14,11 +14,11 @@ Vagrant.configure(2) do |config|
         subconfig.vm.network :private_network, ip: "10.0.1.10"
         subconfig.vm.provision "shell", inline: <<-SHELL
             sudo apt-get update
-            sudo apt-get -y install python-pip            
+            sudo apt-get -y install python3-pip         
             sudo apt-get install gunicorn
             sudo apt-get -y autoremove
             cd /vagrant/sequencer
-            sudo pip install -r requirements.txt
+            sudo pip3 install -r requirements.txt
         SHELL
         subconfig.trigger.after :up do |trigger|
             trigger.name = "Run sequencer"
@@ -43,10 +43,10 @@ Vagrant.configure(2) do |config|
         subconfig.vm.network :private_network, ip: "10.0.1.11"
         subconfig.vm.provision "shell", inline: <<-SHELL
             sudo apt-get update
-            sudo apt-get -y install python-pip
+            sudo apt-get -y install python3-pip
             sudo apt-get -y autoremove
             cd /vagrant/shuffler
-            sudo pip install -r requirements.txt
+            sudo pip3 install -r requirements.txt
         SHELL
         subconfig.trigger.after :up do |trigger|
             trigger.name = "Run shuffler"
@@ -72,10 +72,10 @@ Vagrant.configure(2) do |config|
             subconfig.vm.network :private_network, ip: "10.0.1.#{i + 11}"
             subconfig.vm.provision "shell", inline: <<-SHELL
                 sudo apt-get update
-                sudo apt-get -y install python-pip
+                sudo apt-get -y install python3-pip
                 sudo apt-get -y autoremove
                 cd /vagrant/bank_server
-                sudo pip install -r requirements.txt
+                sudo pip3 install -r requirements.txt
             SHELL
             subconfig.trigger.after :up do |trigger|
                 trigger.name = "Run bank-server"

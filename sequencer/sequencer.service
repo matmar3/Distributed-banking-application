@@ -4,7 +4,7 @@ After=network-online.target
 
 [Service]
 SyslogIdentifier=sequencer
-ExecStart=/usr/bin/python /vagrant/sequencer/server.py
+ExecStart=/usr/bin/python3 /vagrant/sequencer/server.py
 
 [Install]
 WantedBy=multi-user.target
